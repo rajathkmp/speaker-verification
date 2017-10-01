@@ -181,6 +181,3 @@ if __name__ == "__main__":
 			eer = (far[i]+frr[i])/2
 			print('EER: ', eer)
 			break
-
-
-
