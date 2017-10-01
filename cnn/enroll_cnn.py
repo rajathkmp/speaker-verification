@@ -25,37 +25,27 @@ from keras.layers import LSTM
 from keras.models import load_model
 
 def loadData(inputData):
-
 	featsReader = htk.open(inputData)
 	trainData = featsReader.getall()
-
 	np.random.shuffle(trainData)
-
 	yUtt = trainData[:, -1]
 	trainData = np.delete(trainData, -1, 1)
-	
 	ySpkTrain = trainData[:, -1]
 	trainData = np.delete(trainData, -1, 1)
-	
 	yKwTrain = trainData[:, -1]
 	xTrain = np.delete(trainData, -1, 1)
-	
 	del trainData
-
 	return (xTrain, ySpkTrain.astype(int), yKwTrain.astype(int) ,yUtt.astype(int))
 
 def correctLabel(yTrain):
 	a = list(set(yTrain))
 	correctA = [ i  for i in range(len(a)) ]
-	
 	Y_trainFin = []
 	for i in yTrain:
-		Y_trainFin.append(correctA[a.index(i)])
-		
+		Y_trainFin.append(correctA[a.index(i)])	
 	return np.array(Y_trainFin)
 
 def cnn_reshape(X_list, windowSize):
-
 	Y_list = []
 	for i in X_list:
 		j = i.reshape(windowSize,32)
@@ -66,7 +56,6 @@ def cnn_reshape(X_list, windowSize):
 
 def realData(data, SPKlabel ,KWlabel, uttLabel):
 	tempIndex = np.where( KWlabel == 1)[0]
-
 	dataReal = []
 	spklabelReal = []
 	utt = []
@@ -80,7 +69,6 @@ def realData(data, SPKlabel ,KWlabel, uttLabel):
 def normVec(vec):
 	return(vec/np.linalg.norm(vec))
 
-
 def queryWS(nameKW):
 	a = {
 	'government': 75,
@@ -91,7 +79,6 @@ def queryWS(nameKW):
 	'morning': 69,
 	'business': 81
 	}
-
 	return a[nameKW]
 
 if __name__ == "__main__":
@@ -117,15 +104,12 @@ if __name__ == "__main__":
 	yTrain = []
 
 	for i in list(set(Y_train_utt)):
-
 		tempIndex = np.where(Y_train_utt == i)[0]
 		dataTemp = []
 		labelTemp = []
-
 		for j in tempIndex:
 			dataTemp.append(X_train[j])
 			labelTemp.append(Y_train[j])
-
 		if len(set(labelTemp)) != 1:
 			print(i)
 			sys.exit()
@@ -160,26 +144,17 @@ if __name__ == "__main__":
 					else:
 						FalseLabel.append(cosineDist)
 
-
-
 	groundTr = [0]* len(FalseLabel) + [1]* len(TrueLabel)
 	posteriors = FalseLabel + TrueLabel
-
 	print('FalseLen: {} , TrueLen: {}'.format(len(FalseLabel), len(TrueLabel)))
 	auc = roc_auc_score(groundTr, posteriors)
 	print('area under curve: ', auc*100)
-
 	far, tar, thr = roc_curve(groundTr, posteriors)
 	far = far*100
 	frr = (1 - tar)*100
-
 	minDiff = min([ abs(far[i] - frr[i]) for i in range(len(far)) ])
-
 	for i in range(len(far)):
 		if abs(far[i] - frr[i]) == minDiff:
 			eer = (far[i]+frr[i])/2
 			print('EER: ', eer)
 			break
-
-
-

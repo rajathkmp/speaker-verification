@@ -23,38 +23,27 @@ import os
 np.random.seed(2570)
 
 def loadData(inputData):
-
 	featsReader = htk.open(inputData)
 	trainData = featsReader.getall()
-
 	np.random.shuffle(trainData)
-
 	yUtt = trainData[:, -1]
 	trainData = np.delete(trainData, -1, 1)
-	
 	ySpkTrain = trainData[:, -1]
 	trainData = np.delete(trainData, -1, 1)
-	
 	yKwTrain = trainData[:, -1]
 	xTrain = np.delete(trainData, -1, 1)
-	
 	del trainData
-
 	return (xTrain, ySpkTrain.astype(int), yKwTrain.astype(int) ,yUtt.astype(int))
-
 
 def correctLabel(yTrain):
 	a = list(set(yTrain))
 	correctA = [ i  for i in range(len(a)) ]
-	
 	Y_trainFin = []
 	for i in yTrain:
 		Y_trainFin.append(correctA[a.index(i)])
-		
 	return np.array(Y_trainFin)
 
 def cnn_reshape(X_list, windowSize):
-
 	Y_list = []
 	for i in X_list:
 		j = i.reshape(windowSize,32)
@@ -65,14 +54,12 @@ def cnn_reshape(X_list, windowSize):
 
 def realData(data, SPKlabel ,KWlabel):
 	tempIndex = np.where( KWlabel == 1)[0]
-
 	dataReal = []
 	spklabelReal = []
 	for i in range(len(data)):
 		if i in tempIndex:
 			dataReal.append(data[i])
 			spklabelReal.append(SPKlabel[i])
-
 	return (np.array(dataReal), np.array(spklabelReal))
 
 def queryWS(nameKW):
@@ -138,24 +125,3 @@ if __name__ == "__main__":
 
 	spk.save('spk.h5')
 	spkModel.save('onlySPK.h5')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
