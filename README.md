@@ -13,4 +13,4 @@ __features:__ 32 dimensional log filterbank generated using HTK Toolkit
 __labels:__ labels are force aligned using ASR Model built using Kaldi's WSJ recipe.  
 
 
-Work was done during my stay at [Learning and Extraction of Acoustic Pattern Lab, IISc](http://leap.ee.iisc.ac.in) under the guidance of [Prof. Sriram Ganapathy](http://leap.ee.iisc.ac.in/sriram)
+Work was done at [Learning and Extraction of Acoustic Pattern Lab, IISc](http://leap.ee.iisc.ac.in) under the guidance of [Prof. Sriram Ganapathy](http://leap.ee.iisc.ac.in/sriram)
